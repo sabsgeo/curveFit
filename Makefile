@@ -24,3 +24,8 @@ clean:
 test:
 	- node test.js
 
+serve:
+	- mv lmfit.js web/gen/
+	- mv lmfit.wasm web/gen/
+	- emrun --port 8080 web/
+
