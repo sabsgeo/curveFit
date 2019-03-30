@@ -1,9 +1,10 @@
 CHIP_SRC=src
-CHIP_INC=$(CHIP_SRC)/lmfit-6.4
+CHIP_INC=$(CHIP_SRC)/lmfit-8.2.2
 
 CHIP_SRCS=\
 		$(CHIP_INC)/lmcurve.c\
-		$(CHIP_INC)/lmmin.c
+		$(CHIP_INC)/lmmin.c\
+		$(CHIP_INC)/lminvert.c
 
 SRCS=$(CHIP_SRCS) $(CHIP_SRC)/lmfit.js.c
 
@@ -24,8 +25,8 @@ clean:
 test:
 	- node test.js
 
-serve:
-	- mv lmfit.js web/gen/
-	- mv lmfit.wasm web/gen/
+serve: all
+	- cp lmfit.js web/gen/
+	- cp lmfit.wasm web/gen/
 	- emrun --port 8080 web/
 
