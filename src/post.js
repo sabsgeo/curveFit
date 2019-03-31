@@ -11,6 +11,26 @@
 var TIME_DELAY = 50;
 var isAsmLoaded = false;
 
+
+var lmmin = function(data) {
+  var _lmmin = function(data, resolve, reject) {
+    var ret = {};
+    if (!isAsmLoaded) {
+      setTimeout(() => {
+        _lmmin(data, resolve, reject);
+      }, TIME_DELAY);
+    } else {
+      var do_fit = cwrap('do_lmmin', 'number', []);
+      do_fit();
+      resolve();
+    }
+  }
+
+  return new Promise(function(resolve, reject) {
+    _lmmin(data, resolve, reject);
+  });
+};
+
 var fit = function (data) { // TODO: Accept strings
   var _fit = function(data, resolve, reject) {
     var ret = {};
@@ -20,7 +40,7 @@ var fit = function (data) { // TODO: Accept strings
       }, TIME_DELAY);
     } else {
       /* wrap fitting function */
-      var do_fit = cwrap('do_fit', 'number', ['number', 'number', 'number', 'number', 'number', 'number']);
+      var do_fit = cwrap('do_fit', 'number', ['number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number', 'number']);
   
       /* model function */
       var f = addFunction(
@@ -124,7 +144,8 @@ Module.onRuntimeInitialized = function() {
 }
 
 this['lmfit'] = {
-  'fit': fit
+  'fit': fit,
+  'lmmin': lmmin
 };
 
 return this['lmfit'];

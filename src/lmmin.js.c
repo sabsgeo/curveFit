@@ -27,7 +27,7 @@ void evaluate_surface( const double *par, int m_dat, const void *data,
 	fvec[i] = D->y[i] - D->f( D->tx[i], D->tz[i], par );
 }
 
-int main()
+int do_lmmin()
 {
     /* parameter vector */
     int n_par = 3;                /* number of parameters in model function f */

@@ -92,3 +92,4 @@ function sqrt() {
 logistic_function();
 wood_curve();
 sqrt();
+lmfit.lmmin();

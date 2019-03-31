@@ -10,18 +10,15 @@ LMFIT_SRC=$(CHIP_SRCS) $(CHIP_SRC)/lmfit.js.c
 LMMIN_SRC=$(CHIP_SRCS) $(CHIP_SRC)/lmmin.js.c
 
 TARGET=lmfit.js
-TARGETS=$(TARGET) lmfit.wasm lmmin
+TARGETS=$(TARGET) lmfit.wasm
 
 all: clean lmfit.js
 
 lmfit.js: $(LMFIT_SRC)
 		emcc -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 -Os\
 		-I $(CHIP_INC) \
-		-s EXPORTED_FUNCTIONS="['_do_fit']" -s RESERVED_FUNCTION_POINTERS=20\
-		-o $@ --pre-js $(CHIP_SRC)/pre.js --post-js $(CHIP_SRC)/post.js $(LMFIT_SRC)
-
-lmmin.js: $(LMMIN_SRC) 
-		gcc -I $(CHIP_INC) $(LMMIN_SRC) -lm -o lmmin
+		-s EXPORTED_FUNCTIONS="['_do_fit', '_do_lmmin']" -s RESERVED_FUNCTION_POINTERS=20\
+		-o $@ --pre-js $(CHIP_SRC)/pre.js --post-js $(CHIP_SRC)/post.js $(LMFIT_SRC) $(LMMIN_SRC)
 
 clean:
 	- rm $(TARGETS)
